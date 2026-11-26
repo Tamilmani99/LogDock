@@ -1,0 +1,44 @@
+
+discovery.docker "logdock_containers" {
+  host = "tcp://socket-proxy:2375"
+}
+
+// Identify LogDock containers and their Compose service names
+discovery.relabel "logdock_labels" {
+  targets = []
+
+  // Collect only containers belonging to LogDock
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+    regex         = "logdock"
+    action        = "keep"
+  }
+
+  // Use the Docker Compose service name
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+    target_label  = "service_name"
+  }
+
+  // Keep the actual container name as additional metadata
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+}
+
+// Collect Docker logs
+loki.source.docker "logdock_logs" {
+  host          = "tcp://socket-proxy:2375"
+  targets       = discovery.docker.logdock_containers.targets
+  relabel_rules = discovery.relabel.logdock_labels.rules
+  forward_to    = [loki.write.logdock_loki.receiver]
+}
+
+// Send logs to Loki
+loki.write "logdock_loki" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
