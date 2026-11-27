@@ -7,6 +7,18 @@ LogDock is a self-hosted observability dashboard built to monitor running infras
 It combines Docker container monitoring, real Windows host metrics, centralized logging, application performance measurements, and incident automation in one dashboard.
 
 ---
+## Screenshots
+
+### Overview
+
+
+
+### Metrics
+
+
+
+### Failure Lab
+
 
 ## Features
 
