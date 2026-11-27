@@ -11,15 +11,17 @@ It combines Docker container monitoring, real Windows host metrics, centralized 
 
 ### Overview
 
-
+![LogDock Overview](docs/screenshots/overview.png)
 
 ### Metrics
 
-
+![LogDock Services and Metrics](docs/screenshots/metrics.png)
 
 ### Failure Lab
 
+![LogDock Incident Management and Failure Lab](docs/screenshots/failure-lab.png)
 
+---
 ## Features
 
 ### Infrastructure Overview
